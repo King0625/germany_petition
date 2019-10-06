@@ -75,6 +75,8 @@ if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_9
     // $result = curl_exec($ch);
 
     // echo $result;
+}else{
+    echo json_encode(['message' => 'Request error!!']);
 }
 // 成功：https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html 
 // 失敗：https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html

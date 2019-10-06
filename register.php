@@ -1,5 +1,6 @@
 <?php
 include "config.php";
+
 $post_data = [
   'email' => trim($_POST['email']),
   'passwort' => trim($_POST['passwort']),
@@ -17,6 +18,7 @@ $post_data = [
   'sectimestamp' => trim($_POST['sectimestamp']),
   'JavaScriptEnable' => trim($_POST['JavaScriptEnable'])
 ];
+// $post_data = $_POST;
 // var_dump($post_data);
 // die();
   $ch = curl_init('https://epetitionen.bundestag.de/epet/registrieren.form.html');
@@ -52,6 +54,8 @@ $post_data = [
     echo json_encode(['message' => 'Register successfully!!']);
   }elseif($url == 'https://epetitionen.bundestag.de/content/epet/registrieren.html'){
     echo json_encode(['message' => 'Register failed. Please check your email.']);
+  }else{
+    echo json_encode(['message' => 'Request error!!']);
   }
   // 成功：https://epetitionen.bundestag.de/content/epet/registrieren.danke.html 
   // 失敗：https://epetitionen.bundestag.de/content/epet/registrieren.html 
