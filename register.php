@@ -1,4 +1,5 @@
 <?php
+include "config.php";
 $post_data = [
   'email' => trim($_POST['email']),
   'passwort' => trim($_POST['passwort']),
@@ -28,7 +29,7 @@ $post_data = [
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
   curl_setopt($ch, CURLOPT_HTTPHEADER	, array(
-    'Cookie: renderid=s292; JSESSIONID=1whn24j1xm6ts38mii9ul6281; SERVERID=ba54139d16c4262a64bd199a74bd72063a5d8bcf' .
+    COOKIE .
     'Origin: https://epetitionen.bundestag.de' .
     'Content-type: application/x-www-form-urlencoded'
   ));
