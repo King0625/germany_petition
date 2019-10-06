@@ -1,5 +1,5 @@
 <?php
-
+include "config.php";
 $post_data = [
     'email' => trim($_POST['email']),
     'passwort' => trim($_POST['passwort']),
@@ -8,13 +8,13 @@ $post_data = [
     'sectimestamp' => trim($_POST['sectimestamp'])
 ];
 
-$post_data = [
-    'email' => 'a7164265@gmail.com',
-    'passwort' => 'qwnmTANK2006#',
-    'mitzeichnerliste_name' => 0,
-    '_charset_' => 'UTF-8',
-    'sectimestamp' => 1570177371186
-];
+// $post_data = [
+//     'email' => 'independentchen@gmail.com',
+//     'passwort' => 'a7110783A',
+//     'mitzeichnerliste_name' => 0,
+//     '_charset_' => 'UTF-8',
+//     'sectimestamp' => 1570177371186
+// ];
 
 $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.form.html');
 
@@ -26,7 +26,7 @@ curl_setopt($ch, CURLOPT_NOBODY, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 curl_setopt($ch, CURLOPT_HTTPHEADER	, array(
-    'Cookie: renderid=s293; JSESSIONID=1whn24j1xm6ts38mii9ul6281; SERVERID=ba54139d16c4262a64bd199a74bd72063a5d8bcf' .
+    COOKIE .
     'Origin: https://epetitionen.bundestag.de' .
     'Content-type: application/x-www-form-urlencoded'
 ));
@@ -51,27 +51,28 @@ $serverid = $cookie[1];
 
 
 if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html'){
-    echo "Signin failed!";
+    echo json_encode(['message' => 'Signin failed!']);
 }else{
+    echo json_encode(['message' => 'Signin successfully!']);
     // echo "YES";
-    $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.layer.$$$.a.u.html');
-    curl_setopt($ch, CURLOPT_HTTPGET, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HEADER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-    // curl_setopt($ch, CURLOPT_NOBODY, false);
-    curl_setopt($ch, CURLOPT_HTTPHEADER	, array(
-        "Connection: keep-alive" . 
-        "Cookie: renderid=s293; $serverid; $jsessionid" .
-        "Host: epetitionen.bundestag.de" .
-        "Referer: https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html" . 
-        "Sec-Fetch-Mode: cors" .
-        "Sec-Fetch-Site: same-origin" . 
-        "X-Requested-With: XMLHttpRequest" .
-        "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
-    ));
+    // $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.layer.$$$.a.u.html');
+    // curl_setopt($ch, CURLOPT_HTTPGET, true);
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_HEADER, true);
+    // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+    // // curl_setopt($ch, CURLOPT_NOBODY, false);
+    // curl_setopt($ch, CURLOPT_HTTPHEADER	, array(
+    //     "Connection: keep-alive" . 
+    //     "Cookie: renderid=s293; $serverid; $jsessionid" .
+    //     "Host: epetitionen.bundestag.de" .
+    //     "Referer: https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html" . 
+    //     "Sec-Fetch-Mode: cors" .
+    //     "Sec-Fetch-Site: same-origin" . 
+    //     "X-Requested-With: XMLHttpRequest" .
+    //     "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+    // ));
     
-    $result = curl_exec($ch);
+    // $result = curl_exec($ch);
 
     // echo $result;
 }
