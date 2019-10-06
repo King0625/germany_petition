@@ -39,7 +39,7 @@ $body = substr($response, $header_size);
 preg_match('/.*location: (http[a-z\:\/\/\.]+).*/', $header, $m);
 // var_dump($m);
 $url = $m[1];
-echo $response;
+// echo $response;
 curl_close($ch);
 preg_match('/.*(JSESSIONID=.+).;/', $header, $cookie);
 // var_dump($cookie);
@@ -50,10 +50,10 @@ $serverid = $cookie[1];
 
 
 
-if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html'){
-    echo json_encode(['message' => 'Signin failed!']);
-}else{
+if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html'){
     echo json_encode(['message' => 'Signin successfully!']);
+}elseif($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html'){
+    echo json_encode(['message' => 'Signin failed!']);
     // echo "YES";
     // $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.layer.$$$.a.u.html');
     // curl_setopt($ch, CURLOPT_HTTPGET, true);
