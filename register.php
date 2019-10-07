@@ -1,6 +1,5 @@
 <?php
 include "config.php";
-// header("Access-Control-Allow-Methods: POST");
 
 $error = array();
 
