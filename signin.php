@@ -1,5 +1,28 @@
 <?php
 include "config.php";
+// header("Access-Control-Allow-Methods: POST");
+
+$error = array();
+
+if(empty($_POST['email'])){
+    $error['email'] = '電子郵件為必填';
+}elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+    $error['email'] = '須符合電子郵件格式';
+}
+
+if(empty($_POST['passwort'])){
+    $error['passwort'] = '密碼為必填';
+}
+
+if(empty($_POST['mitzeichnerliste_name'])){
+    $error['mitzeichnerliste_name'] = '請選擇是否具名聯署';
+}
+
+if(!empty($error)){
+    echo json_encode($error, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
+    die();
+}
+
 $post_data = [
     'email' => trim($_POST['email']),
     'passwort' => trim($_POST['passwort']),
