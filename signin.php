@@ -1,49 +1,45 @@
 <?php
 include "config.php";
-// header("Access-Control-Allow-Methods: POST");
 
-$error = array();
+$post_data = file_get_contents('php://input');
+$input = json_decode($post_data, TRUE);
 
-if(empty($_POST['email'])){
-    $error['email'] = '電子郵件為必填';
-}elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-    $error['email'] = '須符合電子郵件格式';
-}
+// $error = array();
 
-if(empty($_POST['passwort'])){
-    $error['passwort'] = '密碼為必填';
-}
+// if(empty($input['email'])){
+//     $error['email'] = '電子郵件為必填';
+// }
+// if(!filter_var($input['email'], FILTER_VALIDATE_EMAIL)){
+//     $error['email'] = '須符合電子郵件格式';
+// }
 
-if(empty($_POST['mitzeichnerliste_name'])){
-    $error['mitzeichnerliste_name'] = '請選擇是否具名聯署';
-}
+// if(empty($input['passwort'])){
+//     $error['passwort'] = '密碼為必填';
+// }
 
-if(!empty($error)){
-    echo json_encode($error, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
-    die();
-}
+// if(empty($input['mitzeichnerliste_name'])){
+//     $error['mitzeichnerliste_name'] = '請選擇是否具名聯署';
+// }
 
-$post_data = [
-    'email' => trim($_POST['email']),
-    'passwort' => trim($_POST['passwort']),
-    'mitzeichnerliste_name' => trim($_POST['mitzeichnerliste_name']),
-    '_charset_' => trim($_POST['_charset_']),
-    'sectimestamp' => trim($_POST['sectimestamp'])
-];
+// if(!empty($error)){
+//     http_response_code(400);
+//     echo json_encode($error, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
+//     die();
+// }
 
 // $post_data = [
-//     'email' => 'independentchen@gmail.com',
-//     'passwort' => 'a7110783A',
-//     'mitzeichnerliste_name' => 0,
-//     '_charset_' => 'UTF-8',
-//     'sectimestamp' => 1570177371186
+//     'email' => trim($_POST['email']),
+//     'passwort' => trim($_POST['passwort']),
+//     'mitzeichnerliste_name' => trim($_POST['mitzeichnerliste_name']),
+//     '_charset_' => trim($_POST['_charset_']),
+//     'sectimestamp' => trim($_POST['sectimestamp'])
 // ];
 
 $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.form.html');
 
 curl_setopt($ch, CURLOPT_POST, true);
 // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
 curl_setopt($ch, CURLOPT_HEADER, true);
 curl_setopt($ch, CURLOPT_NOBODY, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -64,6 +60,7 @@ preg_match('/.*location: (http[a-z\:\/\/\.]+).*/', $header, $m);
 $url = $m[1];
 // echo $response;
 curl_close($ch);
+
 preg_match('/.*(JSESSIONID=.+).;/', $header, $cookie);
 // var_dump($cookie);
 $jsessionid = $cookie[1];
@@ -76,7 +73,8 @@ $serverid = $cookie[1];
 if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html'){
     echo json_encode(['message' => 'Signin successfully!']);
 }elseif($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html'){
-    echo json_encode(['message' => 'Signin failed!']);
+    http_response_code(401);
+    echo json_encode(['message' => 'Signin failed! Please check your email or password!']);
     // echo "YES";
     // $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.layer.$$$.a.u.html');
     // curl_setopt($ch, CURLOPT_HTTPGET, true);
@@ -99,7 +97,8 @@ if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_9
 
     // echo $result;
 }else{
-    echo json_encode(['message' => 'Request error!!']);
+    http_response_code(403);
+    echo json_encode(['message' => '403 Forbidden']);
 }
 // 成功：https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html 
 // 失敗：https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html
