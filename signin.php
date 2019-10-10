@@ -28,11 +28,11 @@ $input = json_decode($post_data, TRUE);
 // }
 
 // $post_data = [
-//     'email' => trim($_POST['email']),
-//     'passwort' => trim($_POST['passwort']),
-//     'mitzeichnerliste_name' => trim($_POST['mitzeichnerliste_name']),
-//     '_charset_' => trim($_POST['_charset_']),
-//     'sectimestamp' => trim($_POST['sectimestamp'])
+//     'email' => "a7164265@gmail.com",
+//     'passwort' => "4564654651",
+//     'mitzeichnerliste_name' => 1,
+//     '_charset_' => "UTF-8",
+//     'sectimestamp' => 113245648784
 // ];
 
 $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.form.html');
@@ -55,25 +55,28 @@ $response = curl_exec($ch);
 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 $header = substr($response, 0, $header_size);
 $body = substr($response, $header_size);
-preg_match('/.*location: (http[a-z\:\/\/\.]+).*/', $header, $m);
+preg_match('/.*location: (http[a-z\:\/\/\.]+[\w\/\.\$]*)/', $header, $m);
 // var_dump($m);
 $url = $m[1];
-// echo $response;
 curl_close($ch);
+// echo($response);
+// echo($url);
+// var_dump('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html');
+// die();
 
-preg_match('/.*(JSESSIONID=.+).;/', $header, $cookie);
-// var_dump($cookie);
-$jsessionid = $cookie[1];
+// preg_match('/.*(JSESSIONID=.+).;/', $header, $cookie);
+// // var_dump($cookie);
+// $jsessionid = $cookie[1];
 
-preg_match('/.*(SERVERID=.+).;/', $header, $cookie);
-$serverid = $cookie[1];
+// preg_match('/.*(SERVERID=.+).;/', $header, $cookie);
+// $serverid = $cookie[1];
 
-
-
+// https://epetitionen.bundestag.de/content/epet/registrieren.danke.html
 if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html'){
+    // http_response_code(201);
     echo json_encode(['message' => 'Signin successfully!']);
 }elseif($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.html'){
-    http_response_code(401);
+    // http_response_code(401);
     echo json_encode(['message' => 'Signin failed! Please check your email or password!']);
     // echo "YES";
     // $ch = curl_init('https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.mitzeichnen.layer.$$$.a.u.html');
@@ -97,7 +100,7 @@ if($url == 'https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_9
 
     // echo $result;
 }else{
-    http_response_code(403);
+    // http_response_code(403);
     echo json_encode(['message' => '403 Forbidden']);
 }
 // 成功：https://epetitionen.bundestag.de/petitionen/_2019/_05/_31/Petition_95643.$$$.a.u.html 

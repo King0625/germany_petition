@@ -89,7 +89,7 @@ if($input['passwort'] != $input['passwort_wiederholen']){
 // }
 
 if(!empty($error)){
-  http_response_code(400);
+  // http_response_code(400);
   echo json_encode($error, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
   die();
 }
@@ -107,7 +107,7 @@ if(!empty($error)){
   curl_setopt($ch, CURLOPT_HEADER, true);
   curl_setopt($ch, CURLOPT_NOBODY, false);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+  // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
   curl_setopt($ch, CURLOPT_HTTPHEADER	, array(
     COOKIE .
     'Origin: https://epetitionen.bundestag.de' .
@@ -129,12 +129,13 @@ if(!empty($error)){
   curl_close($ch);
 
   if($url == 'https://epetitionen.bundestag.de/content/epet/registrieren.danke.html'){
+    // http_response_code(201);
     echo json_encode(['message' => 'Register successfully!!']);
   }elseif($url == 'https://epetitionen.bundestag.de/content/epet/registrieren.html'){
-    http_response_code(400);
+    // http_response_code(400);
     echo json_encode(['message' => 'Register failed. The email has been registered.']);
   }else{
-    http_response_code(403);
+    // http_response_code(403);
     echo json_encode(['message' => '403 Forbidden']);
   }
   // 成功：https://epetitionen.bundestag.de/content/epet/registrieren.danke.html 
