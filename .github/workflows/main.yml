@@ -19,7 +19,7 @@ jobs:
       env:
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
     - name: test printing
-      run: cat $HOME/secrets/key
+      run: ls $HOME/secrets/key
     - name: chmod
       run: chmod 600 $HOME/secrets/key
     - name: ssh
