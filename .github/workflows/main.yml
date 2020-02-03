@@ -1,13 +1,26 @@
-- name: decrypt
-    run: |
-      mkdir $HOME/secrets
-      gpg --quiet --batch --yes --decrypt --passphrase="$PASSPHRASE" \
-      --output $HOME/secrets/key google_compute_engine.gpg
-    env:
-      PASSPHRASE: ${{ secrets.PASSPHRASE }}
-  - name: test printing
-    run: cat $HOME/secrets/key
-  - name: chmod
-    run: chmod 600 $HOME/secrets/key
-  - name: ssh
-    run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key kenchen@34.80.94.253 "cd germany_petition/;git pull"
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: decrypt
+      run: |
+        mkdir $HOME/secrets
+        gpg --quiet --batch --yes --decrypt --passphrase="$PASSPHRASE" \
+        --output $HOME/secrets/key google_compute_engine.gpg
+      env:
+        PASSPHRASE: ${{ secrets.PASSPHRASE }}
+    - name: test printing
+      run: cat $HOME/secrets/key
+    - name: chmod
+      run: chmod 600 $HOME/secrets/key
+    - name: ssh
+      run: ssh -o StrictHostKeyChecking=no -i $HOME/secrets/key kenchen@34.80.94.253 "cd action_ci/;git pull"
